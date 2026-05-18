@@ -1,0 +1,39 @@
+name: CI - b11701246
+
+on:
+  push:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ci:
+    name: CI Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript typecheck
+        run: npm run typecheck
+
+      - name: Prettier format check
+        run: npm run format:check
+
+      - name: Run tests with coverage
+        run: npm run test -- --coverage.enabled true
+
+      - name: Report coverage
+        uses: davelosert/vitest-coverage-report-action@v2
+        if: always()
