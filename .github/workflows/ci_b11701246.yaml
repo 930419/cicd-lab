@@ -1,7 +1,7 @@
 name: CI - b11701246
 
 on:
-  push:
+  push: # 自動觸發
 
 permissions:
   contents: read
